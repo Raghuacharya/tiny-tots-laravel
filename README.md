@@ -21,7 +21,7 @@ Tiny Tots - A Laravel-based school fee management system with PDF receipt genera
 
 1. Clone the repository:
 ```
-git clone https://github.com/your-username/tiny-tots-laravel.git
+git clone https://github.com/Raghuacharya/tiny-tots-laravel.git
 cd tiny-tots-laravel
 ```
 
