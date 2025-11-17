@@ -1,0 +1,13 @@
+.badge-father {
+    background-color: #eef4ff; /* light blue */
+    color: #1a3d7c;
+    font-weight: 500;
+}
+.badge-mother {
+    background-color: #fdf3e6; /* light orange/peach */
+    color: #7c3a00;
+    font-weight: 500;
+}
+.nav-icon.fas {
+    font-size: 1rem !important;
+}

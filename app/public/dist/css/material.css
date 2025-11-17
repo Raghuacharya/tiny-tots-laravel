@@ -1,0 +1,221 @@
+/* === GLOBAL === */
+body {
+    background-color: #f9fafb;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Sidebar Brand */
+[class*=sidebar-light] .brand-link {
+    border-bottom: none !important;
+    box-shadow: 0 0 10px 0 #e3e3e3;
+    font-weight: 600;
+}
+
+/* Sidebar Container Shadow */
+.main-sidebar {
+    box-shadow: 0px 0px 10px 2px #ededed;
+    border-radius: 0 10px 10px 0;
+}
+
+/* Active Menu Item (Top Level) */
+.sidebar-dark-olive .nav-sidebar > .nav-item > .nav-link.active,
+.sidebar-light-olive .nav-sidebar > .nav-item > .nav-link.active {
+    background-color: rgba(76, 175, 80, 0.15);
+    color: #4CAF50;
+    border-right: 5px solid #4CAF50;
+    border-radius: 8px 0 0 8px;
+}
+
+/* Active Menu Item (Multi-level) */
+.sidebar-dark-olive .nav-treeview > .nav-item > .nav-link.active,
+.sidebar-light-olive .nav-treeview > .nav-item > .nav-link.active {
+    background-color: rgba(76, 175, 80, 0.15);
+    color: #4CAF50;
+    border-left: 5px solid #4CAF50;
+    border-radius: 0 8px 8px 0;
+}
+
+/* Hover Effects */
+.nav-sidebar .nav-item .nav-link {
+    transition: all 0.2s ease-in-out;
+    border-radius: 8px;
+}
+.nav-sidebar .nav-item .nav-link:hover {
+    background-color: rgba(76, 175, 80, 0.05);
+    transform: translateX(4px);
+}
+
+/* Card Material Style */
+.card {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    transition: box-shadow 0.2s ease-in-out;
+}
+.card:hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* Table Style */
+.table {
+    border-radius: 10px;
+    overflow: hidden;
+}
+.table thead th {
+    background-color: #f4f6f9;
+    font-weight: 600;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+.btn-primary:hover {
+    background-color: #388E3C;
+    border-color: #388E3C;
+}
+.btn-warning {
+    background-color: #FFC107;
+    border-color: #FFC107;
+}
+.btn-warning:hover {
+    background-color: #FFA000;
+    border-color: #FFA000;
+}
+
+body.login-page {
+    background-color: #f9fafb;
+    font-family: 'Inter', sans-serif;
+}
+
+.login-box {
+    width: 380px;
+}
+
+.login-logo {
+    font-weight: 600;
+    font-size: 1.8rem;
+    color: #4CAF50;
+    margin-bottom: 20px;
+}
+
+.login-card-body {
+    padding: 2rem;
+}
+
+.input-group .form-control {
+    border-radius: 8px 0 0 8px;
+    border: 1px solid #ddd;
+    box-shadow: none;
+}
+.input-group .input-group-text {
+    border-radius: 0 8px 8px 0;
+    background-color: #f4f6f9;
+    border: 1px solid #ddd;
+}
+
+.form-control:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+}
+
+.icheck-primary > input:first-child:checked + label::before {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+/* Forgot password link */
+.login-card-body a {
+    color: #4CAF50;
+}
+.login-card-body a:hover {
+    text-decoration: underline;
+}
+
+/* Material UI-like alert */
+.mui-alert {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border-left: 4px solid;
+    font-size: 0.95rem;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    transition: all 0.3s ease;
+}
+
+/* Alert types */
+.mui-alert.success {
+    background-color: #e6f4ea;
+    color: #256029;
+    border-color: #66bb6a;
+}
+
+.mui-alert.error {
+    background-color: #fcebea;
+    color: #9c1c1c;
+    border-color: #f44336;
+}
+
+.mui-alert.warning {
+    background-color: #fff4e5;
+    color: #7a4f01;
+    border-color: #ffb74d;
+}
+
+.mui-alert.info {
+    background-color: #e3f2fd;
+    color: #0d47a1;
+    border-color: #2196f3;
+}
+
+/* Close button */
+.mui-alert .close-btn {
+    background: transparent;
+    border: none;
+    font-size: 1.2rem;
+    color: inherit;
+    cursor: pointer;
+}
+.alert-message {
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}
+/* Global anchor styling for dashboard */
+a {
+    color: #1976d2; /* Material UI primary blue */
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+}
+
+a:hover {
+    color: #1565c0; /* Slightly darker on hover */
+    text-decoration: underline; /* optional */
+}
+
+a:active {
+    color: #0d47a1;
+}
+
+a:focus {
+    outline: none;
+}
+
+/* Optional: for buttons or links that look like Material UI buttons */
+a.btn-link {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 4px;
+    background-color: #e3f2fd;
+    color: #1976d2;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+a.btn-link:hover {
+    background-color: #bbdefb;
+    color: #1565c0;
+    text-decoration: none;
+}
