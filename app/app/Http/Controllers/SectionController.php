@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Section;
 use App\Models\SchoolClass;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -15,11 +16,14 @@ class SectionController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $sections = Section::with('class')->latest()->get();
+            $sections = Section::with('class', 'teacher')->latest()->get();
             return DataTables::of($sections)
                 ->addIndexColumn()
                 ->editColumn('class', function ($row) {
                     return $row->class->name ?? '-';
+                })
+                ->editColumn('teacher', function ($row) {
+                    return $row->teacher ? ($row->teacher->first_name . ' ' . $row->teacher->last_name) : '-';
                 })
                 ->addColumn('actions', function ($section) {
                     return view('sections.partials.actions', compact('section'))->render();
@@ -36,7 +40,8 @@ class SectionController extends Controller
     public function create()
     {
         $classes = SchoolClass::all();
-        return view('sections.create', compact('classes'));
+        $teachers = Teacher::all();
+        return view('sections.create', compact('classes', 'teachers'));
     }
 
     /**
@@ -47,7 +52,7 @@ class SectionController extends Controller
         $request->validate([
             'class_id' => 'required|exists:classes,id',
             'name' => 'required|string|max:255',
-            'teacher' => 'nullable|string|max:255',
+            'teacher_id' => 'nullable|exists:teachers,id',
         ]);
 
         Section::create($request->all());
@@ -60,7 +65,8 @@ class SectionController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $section = Section::with('class', 'teacher')->findOrFail($id);
+        return view('sections.show', compact('section'));
     }
 
     /**
@@ -70,7 +76,8 @@ class SectionController extends Controller
     {
         $section = Section::findOrFail($id);
         $classes = SchoolClass::all();
-        return view('sections.edit', compact('section', 'classes'));
+        $teachers = Teacher::all();
+        return view('sections.edit', compact('section', 'classes', 'teachers'));
     }
 
     /**
@@ -83,7 +90,7 @@ class SectionController extends Controller
         $request->validate([
             'class_id' => 'required|exists:classes,id',
             'name' => 'required|string|max:255',
-            'teacher' => 'nullable|string|max:255',
+            'teacher_id' => 'nullable|exists:teachers,id',
         ]);
 
         $section->update($request->all());

@@ -40,7 +40,7 @@
                                             <th>Class</th>
                                             <th>Name</th>
                                             <th>Teacher</th>
-                                            <th width="120px">Actions</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -50,7 +50,7 @@
                                             <th>Class</th>
                                             <th>Name</th>
                                             <th>Teacher</th>
-                                            <th width="120px">Actions</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -70,6 +70,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: '{{ route('admin.sections.index') }}',
+                columnDefs: [{ width: 200, targets: 4 }],
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',

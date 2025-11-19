@@ -29,7 +29,8 @@
                                 <h3 class="card-title">Update section details</h3>
                             </div>
                             <form action="{{ route('admin.sections.update', $section->id) }}" method="POST">
-                                @csrf
+                                @include('sections._form', ['row' => $section])
+                                {{-- @csrf
                                 @method('PUT')
                                 <div class="card-body">
                                     <div class="form-group">
@@ -75,7 +76,7 @@
                                 <div class="card-footer">
                                     <button type="submit" class="btn btn-primary">Update Section</button>
                                     <a href="{{ route('admin.sections.index') }}" class="btn btn-secondary">Cancel</a>
-                                </div>
+                                </div> --}}
                             </form>
                         </div>
                     </div>
