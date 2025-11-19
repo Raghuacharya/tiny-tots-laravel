@@ -75,6 +75,7 @@
                 serverSide: true,
                 responsive: true,
                 ajax: '{{ route('admin.teachers.index') }}',
+                columnDefs: [{ width: 200, targets: 5 }],
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
