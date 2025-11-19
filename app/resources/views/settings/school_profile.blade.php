@@ -69,7 +69,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                                    <button type="submit" class="btn btn-success btn-sm">Save</button>
                                 </div>
                             </form>
                         </div>
