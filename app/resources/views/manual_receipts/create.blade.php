@@ -148,7 +148,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary">Generate Receipt</button>
+                                    <button type="submit" class="btn btn-success btn-sm">Generate Receipt</button>
                                 </div>
                             </form>
                         </div>
