@@ -63,7 +63,8 @@ class FeeController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $fee = Fee::with('class')->findOrFail($id);
+        return view('fees.show', compact('fee'));
     }
 
     /**

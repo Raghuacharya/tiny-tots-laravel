@@ -29,7 +29,8 @@
                                 <h3 class="card-title">Update fee details</h3>
                             </div>
                             <form action="{{ route('admin.fees.update', $fee->id) }}" method="POST">
-                                @csrf
+                                @include('fees._form', ['row' => $fee])
+                                {{-- @csrf
                                 @method('PUT')
                                 <div class="card-body">
                                     <div class="form-group">
@@ -107,7 +108,7 @@
                                 <div class="card-footer">
                                     <button type="submit" class="btn btn-primary">Create Fee</button>
                                     <a href="{{ route('admin.fees.index') }}" class="btn btn-secondary">Cancel</a>
-                                </div>
+                                </div> --}}
                             </form>
                         </div>
                     </div>

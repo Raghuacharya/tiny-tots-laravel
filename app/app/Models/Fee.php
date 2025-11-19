@@ -14,7 +14,8 @@ class Fee extends Model
         'class_id',
         'name',
         'amount',
-        'due_date',
+        'frequency',
+        'term',
         'description',
     ];
 
