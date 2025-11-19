@@ -23,6 +23,55 @@
                 <x-alert />
                 <div class="row">
                     <div class="col-12">
+                        <h5>Search Students</h5>
+                    </div>
+                    <div class="col-12">
+                        <p class="text-muted">You can search students by selecting class & section or by entering admission
+                            number.</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="class_id">Class</label>
+                                    <select name="class_id" id="class_id" class="form-control form-control-sm">
+                                        <option value="" selected disabled>Select class</option>
+                                        @foreach ($classes as $class)
+                                            <option value="{{ $class->id }}">{{ $class->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="section_id">Section</label>
+                                    <select name="section_id" id="section_id" class="form-control form-control-sm">
+                                        <option value="" selected disabled>Select section</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2 flex-column d-flex justify-content-center align-items-center">
+                                <p class="text-muted or-divider"><span class="or-text">OR</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="admission_no">Admission No.</label>
+                            <input type="text" name="admission_no" id="admission_no" class="form-control form-control-sm"
+                                placeholder="Enter admission no">
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <button type="button" id="search_button" class="btn btn-primary px-4">Search</button>
+                    </div>
+                </div>
+                {{-- <div class="row">
+                    <div class="col-12">
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Select Criteria</h3>
@@ -83,7 +132,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="row">
                     <div class="col-md-12">

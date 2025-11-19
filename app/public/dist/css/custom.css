@@ -140,3 +140,35 @@ a.btn-link:hover {
     color: #1565c0;
     text-decoration: none;
 }
+
+.or-divider {
+    width: 30px;
+    height: 60px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.or-divider::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 100%;
+    background: #dee2e6; /* Bootstrap's light border */
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.or-text {
+    top: 50%;
+    left: 0;
+    background: #fff;
+    padding: 0 5px;
+    font-weight: 600;
+    font-size: 13px;
+    color: #495057;
+    z-index: 2;
+}
