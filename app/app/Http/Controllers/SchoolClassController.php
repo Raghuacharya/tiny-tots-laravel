@@ -65,7 +65,8 @@ class SchoolClassController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $class = SchoolClass::findOrFail($id);
+        return view('classes.show', compact('class'));
     }
 
     /**

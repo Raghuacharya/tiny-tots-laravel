@@ -39,7 +39,7 @@
                                             <th>#</th>
                                             <th>Name</th>
                                             <th>Code</th>
-                                            <th width="120px">Actions</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -48,7 +48,7 @@
                                             <th>#</th>
                                             <th>Name</th>
                                             <th>Code</th>
-                                            <th width="120px">Actions</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -68,6 +68,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: '{{ route('admin.classes.index') }}',
+                columnDefs: [{ width: 200, targets: 3 }],
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
