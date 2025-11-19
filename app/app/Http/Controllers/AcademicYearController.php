@@ -68,7 +68,8 @@ class AcademicYearController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $academicYear = AcademicYear::findOrFail($id);
+        return view('academic_years.show', compact('academicYear'));
     }
 
     /**

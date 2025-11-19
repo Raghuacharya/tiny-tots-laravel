@@ -41,7 +41,7 @@
                                             <th>Start Date</th>
                                             <th>End Date</th>
                                             <th>Status</th>
-                                            <th width="120px">Actions</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -52,7 +52,7 @@
                                             <th>Start Date</th>
                                             <th>End Date</th>
                                             <th>Status</th>
-                                            <th width="120px">Actions</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -72,6 +72,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: '{{ route('admin.academic-years.index') }}',
+                columnDefs: [{ width: 200, targets: 5 }],
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
