@@ -1,0 +1,12 @@
+<a href="{{ route('admin.teachers.show', $teacher->id) }}" class="actions_link" title="View">
+<i class="fas fa-eye" style="font-size: 11px;"></i> View
+</a>
+<a href="{{ route('admin.teachers.edit', $teacher->id) }}" class="actions_link" title="Edit">
+    <i class="fas fa-pencil-alt" style="font-size: 11px;"></i> Edit
+</a>
+<a href="javascript:void(0)" class="open-confirm-modal actions_link" title="Delete"
+    data-message="Are you sure you want to delete {{ $teacher->first_name }}?"
+    data-action="{{ route('admin.teachers.destroy', $teacher->id) }}" data-method="DELETE" data-toggle="modal"
+    data-target="#confirmModal">
+    <i class="fas fa-trash-alt" style="font-size: 11px"></i> Delete
+</a>

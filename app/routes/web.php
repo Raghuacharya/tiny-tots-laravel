@@ -12,6 +12,7 @@ use App\Http\Controllers\ManualReceiptController;
 use App\Http\Controllers\ParentController;
 use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\SectionController;
+use App\Http\Controllers\TeacherController;
 use App\Models\SchoolClass;
 
 Route::get('/', function () {
@@ -46,6 +47,9 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         Route::delete('/{student}', [StudentController::class, 'destroy'])->name('destroy');
         Route::get('/{student}', [StudentController::class, 'show'])->name('show');
     });
+
+    // Teachers Management
+    Route::resource('teachers', TeacherController::class);
 
     Route::get('/parents/{id}/details-with-siblings', [StudentController::class, 'getParentDetailsWithSiblings'])->name('admin.parents.details.with.siblings');
 

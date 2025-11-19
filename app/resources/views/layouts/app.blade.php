@@ -22,8 +22,8 @@
     <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('dist/css/material.css') }}">
-    <link rel="stylesheet" href="{{ asset('dist/css/custom.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('dist/css/material.css') }}"> --}}
+    <link rel="stylesheet" href="{{ asset('dist/css/custom.css?v=1.0.0') }}">
     @yield('page_styles')
 </head>
 
@@ -54,7 +54,7 @@
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-light-olive">
+        <aside class="main-sidebar sidebar-dark-primary">
             <!-- Brand Logo -->
             <a href="{{ route('admin.dashboard') }}" class="brand-link">
                 @if (getSchoolProfile()->logo)
@@ -82,6 +82,33 @@
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>Dashboard</p>
                             </a>
+                        </li>
+
+                        <!-- Teachers Management -->
+                        <li class="nav-item {{ isMenuOpen(['admin.teachers.*']) }}">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-chalkboard-teacher"></i>
+                                <p>
+                                    Teachers
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.teachers.index') }}"
+                                        class="nav-link {{ isActive(['admin.teachers.index', 'admin.teachers.show', 'admin.teachers.edit']) }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>All Teachers</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.teachers.create') }}"
+                                        class="nav-link {{ isActive('admin.teachers.create') }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Add Teacher</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
 
                         <!-- Classes & Sections -->
