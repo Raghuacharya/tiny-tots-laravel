@@ -40,7 +40,7 @@
                                             <th>Name</th>
                                             <th>Email</th>
                                             <th>Contact Number</th>
-                                            <th width="120px">Actions</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -50,7 +50,7 @@
                                             <th>Name</th>
                                             <th>Email</th>
                                             <th>Contact Number</th>
-                                            <th width="120px">Actions</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -70,6 +70,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: '{{ route('admin.parents.index') }}',
+                columnDefs: [{ width: 200, targets: 4 }],
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
