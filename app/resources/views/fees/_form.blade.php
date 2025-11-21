@@ -81,6 +81,6 @@
     </div>
 </div>
 <div class="card-footer">
-    <a href="{{ route('admin.fees.index') }}" class="btn btn-default btn-sm">Cancel</a>
-    <button type="submit" class="btn btn-success btn-sm">Save</button>
+    <a href="{{ route('admin.fees.index') }}" class="btn btn-default btn-sm px-4">Cancel</a>
+    <button type="submit" class="btn btn-success btn-sm px-4">Save</button>
 </div>

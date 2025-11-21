@@ -69,7 +69,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-success btn-sm">Save</button>
+                                    <button type="submit" class="btn btn-success btn-sm px-4">Save</button>
                                 </div>
                             </form>
                         </div>

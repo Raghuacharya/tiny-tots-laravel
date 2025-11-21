@@ -229,8 +229,8 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button type="button" class="btn btn-default btn-sm px-4" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success px-4 btn-sm">Save</button>
                         </div>
                     </form>
                 </div>

@@ -86,7 +86,7 @@
                                     </table>
                                 </div>
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-sm btn-success">Save</button>
+                                    <button type="submit" class="btn btn-sm btn-success px-4">Save</button>
                                 </div>
                             </form>
                         </div>
