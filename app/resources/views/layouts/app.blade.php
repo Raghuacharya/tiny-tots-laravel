@@ -29,6 +29,16 @@
 
 <body class="hold-transition sidebar-mini text-sm">
     <div class="wrapper">
+        <!-- Preloader -->
+        <div class="preloader flex-column justify-content-center align-items-center">
+            @if (getSchoolProfile()->logo)
+                <img class="animation__shake" src="{{ asset('storage/' . getSchoolProfile()->logo) }}"
+                    alt="{{ getSchoolProfile()->name }}" height="60" width="60">
+            @else
+                <img class="animation__shake" src="{{ asset('admin_logo.png') }}" alt="{{ getSchoolProfile()->name }}"
+                    height="60" width="60">
+            @endif
+        </div>
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand bg-info navbar-light bg-white text-sm border-bottom-0">
             <!-- Left navbar links -->
@@ -192,8 +202,37 @@
                             </ul>
                         </li>
 
+
+                        <!-- Attendance Management -->
+                        <li class="nav-item {{ isMenuOpen(['admin.attendance.*']) }}">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-calendar-check"></i>
+                                <p>
+                                    Attendance
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.attendance.teachers.index') }}"
+                                        class="nav-link {{ isActive(['admin.attendance.teachers.index']) }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Teachers</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.attendance.students.index') }}"
+                                        class="nav-link {{ isActive('admin.attendance.students.index') }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Students</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
                         <!-- Fees Management -->
-                        <li class="nav-item {{ isMenuOpen(['admin.fees.*', 'admin.collect.fees.*', 'admin.collect-fees.*', 'admin.manual-receipts.*']) }}">
+                        <li
+                            class="nav-item {{ isMenuOpen(['admin.fees.*', 'admin.collect.fees.*', 'admin.collect-fees.*', 'admin.manual-receipts.*']) }}">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-money-bill"></i>
                                 <p>
@@ -469,6 +508,33 @@
         });
     </script>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Listen for all form submissions
+            document.querySelectorAll('form').forEach(function(form) {
+                form.addEventListener('submit', function(e) {
+                    // Find the submit button inside the submitted form
+                    const submitBtn = form.querySelector('[type="submit"]:not([disabled])');
+                    if (submitBtn) {
+                        // Disable button
+                        submitBtn.disabled = true;
+
+                        // Optional: Keep existing text, show spinner next to it
+                        // Remove any previous spinner
+                        const existingSpinner = submitBtn.querySelector('.btn-spinner');
+                        if (existingSpinner) existingSpinner.remove();
+
+                        // Add the spinner
+                        const spinner = document.createElement('span');
+                        spinner.className = 'btn-spinner spinner-border spinner-border-sm ml-2';
+                        spinner.setAttribute('role', 'status');
+                        spinner.setAttribute('aria-hidden', 'true');
+                        submitBtn.appendChild(spinner);
+                    }
+                });
+            });
+        });
+    </script>
 
 
     @yield('page_scripts')
