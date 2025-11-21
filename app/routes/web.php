@@ -12,6 +12,8 @@ use App\Http\Controllers\ManualReceiptController;
 use App\Http\Controllers\ParentController;
 use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\SectionController;
+use App\Http\Controllers\StudentAttendanceController;
+use App\Http\Controllers\TeacherAttendanceController;
 use App\Http\Controllers\TeacherController;
 use App\Models\SchoolClass;
 
@@ -69,6 +71,21 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 
     // Parent Management
     Route::resource('parents', ParentController::class);
+
+    // Attendance Management
+    Route::prefix('attendance')->name('attendance.')->group(function () {
+        Route::prefix('teachers')->name('teachers.')->group(function () {
+            Route::get('/', [TeacherAttendanceController::class, 'index'])->name('index');
+            Route::post('/', [TeacherAttendanceController::class, 'store'])->name('store');
+            Route::delete('/{id}', [TeacherAttendanceController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('students')->name('students.')->group(function () {
+            Route::get('/', [StudentAttendanceController::class, 'index'])->name('index');
+            Route::post('/', [StudentAttendanceController::class, 'store'])->name('store');
+            Route::delete('/{id}', [StudentAttendanceController::class, 'destroy'])->name('destroy');
+        });
+    });
 
     // Fee Management
     Route::resource('fees', FeeController::class);
