@@ -34,9 +34,9 @@ class StudentController extends Controller
                     $color = $statusColors[$student->status] ?? 'secondary';
                     return '<span class="badge badge-' . $color . '">' . ucfirst($student->status) . '</span>';
                 })
-                // ->addColumn('actions', function ($student) {
-                //     return view('students.partials.actions', compact('student'))->render();
-                // })
+                ->addColumn('actions', function ($student) {
+                    return view('students.partials.actions', compact('student'))->render();
+                })
                 ->rawColumns(['status', 'actions'])
                 ->make(true);
         }
@@ -158,7 +158,7 @@ class StudentController extends Controller
             'status' => 'nullable|in:active,inactive,graduated,withdrawn',
 
             'birth_certificate' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'immuization_record' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'immunization_record' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'transfer_certificate' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'progress_report' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'passport' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
@@ -214,7 +214,7 @@ class StudentController extends Controller
             'status' => $validated['status'] ?? 'active',
 
             'birth_certificate' => $uploadFile('birth_certificate'),
-            'immuization_record' => $uploadFile('immuization_record'),
+            'immunization_record' => $uploadFile('immunization_record'),
             'transfer_certificate' => $uploadFile('transfer_certificate'),
             'progress_report' => $uploadFile('progress_report'),
             'passport' => $uploadFile('passport'),
@@ -237,5 +237,11 @@ class StudentController extends Controller
         }
 
         return redirect()->route('admin.students.index')->with('success', 'Student created successfully!');
+    }
+
+    public function show($id)
+    {
+        $student = Student::with('parent', 'class', 'section')->findOrFail($id);
+        return view('students.show', compact('student'));
     }
 }

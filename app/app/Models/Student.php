@@ -39,7 +39,7 @@ class Student extends Model
         'status',
         'admission_date',
         'birth_certificate',
-        'immuization_record',
+        'immunization_record',
         'transfer_certificate',
         'progress_report',
         'passport',

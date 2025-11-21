@@ -54,7 +54,7 @@ return new class extends Migration
 
             // Document Submission Status
             $table->string('birth_certificate')->nullable();
-            $table->string('immuization_record')->nullable();
+            $table->string('immunization_record')->nullable();
             $table->string('transfer_certificate')->nullable();
             $table->string('progress_report')->nullable();
             $table->string('passport')->nullable();

@@ -150,7 +150,7 @@
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="{{ route('admin.students.index') }}"
-                                        class="nav-link {{ isActive('admin.students.index') }}">
+                                        class="nav-link {{ isActive(['admin.students.index', 'admin.students.edit', 'admin.students.show']) }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>All Students</p>
                                     </a>

@@ -42,7 +42,7 @@
                                             <th>Parent</th>
                                             <th>Date of Birth</th>
                                             <th>Status</th>
-                                            {{-- <th width="120px">Actions</th> --}}
+                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -56,7 +56,7 @@
                                             <th>Parent</th>
                                             <th>Date of Birth</th>
                                             <th>Status</th>
-                                            {{-- <th width="120px">Actions</th> --}}
+                                            <th>Actions</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -76,6 +76,7 @@
                 serverSide: true,
                 responsive: true,
                 ajax: '{{ route('admin.students.index') }}',
+                columnDefs: [{ width: 200, targets: 6 }],
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
@@ -104,12 +105,12 @@
                         orderable: false,
                         searchable: false
                     },
-                    // {
-                    //     data: 'actions',
-                    //     name: 'actions',
-                    //     orderable: false,
-                    //     searchable: false
-                    // }
+                    {
+                        data: 'actions',
+                        name: 'actions',
+                        orderable: false,
+                        searchable: false
+                    }
                 ]
             });
         });
