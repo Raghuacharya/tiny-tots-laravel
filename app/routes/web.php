@@ -103,4 +103,17 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 
     Route::get('/manual-receipts', [ManualReceiptController::class, 'create'])->name('manual-receipts.index');
     Route::post('/manual-receipts', [ManualReceiptController::class, 'generate'])->name('manual-receipts.generate');
+
+
+    Route::get('/version-log', function () {
+        $appVersion = file_exists(base_path('VERSION')) ? trim(file_get_contents(base_path('VERSION'))) : null;
+        $changelogHtml = null;
+
+        if (file_exists(base_path('CHANGELOG.md'))) {
+            $changelog = file_get_contents(base_path('CHANGELOG.md'));
+            $changelogHtml = \Illuminate\Support\Str::markdown($changelog);
+        }
+
+        return view('version-log', compact('appVersion', 'changelogHtml'));
+    })->name('version.log');
 });

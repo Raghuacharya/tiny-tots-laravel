@@ -440,14 +440,14 @@
 
         <!-- Main Footer -->
         <footer class="main-footer">
-            <!-- To the right -->
             <div class="float-right d-none d-sm-inline">
-                V 1.0
+                <a href="{{ route('admin.version.log') }}" style="text-decoration: none;">
+                    V {{ $appVersion }}
+                </a>
             </div>
-            <!-- Default to the left -->
             <strong>Copyright &copy; {{ date('Y') }} <a
-                    href="">{{ getSchoolProfile()->website }}</a>.</strong> All rights
-            reserved.
+                    href="">{{ getSchoolProfile()->website }}</a>.</strong>
+            All rights reserved.
         </footer>
     </div>
     <!-- ./wrapper -->
