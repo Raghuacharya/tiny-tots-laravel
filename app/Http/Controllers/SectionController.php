@@ -7,6 +7,7 @@ use App\Models\SchoolClass;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use App\Models\AcademicYear;
 
 class SectionController extends Controller
 {
@@ -16,7 +17,9 @@ class SectionController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $sections = Section::with('class', 'teacher')->latest()->get();
+            $academicYearId = AcademicYear::activeId();
+
+            $sections = Section::where('academic_year_id', $academicYearId)->with('class', 'teacher')->latest()->get();
             return DataTables::of($sections)
                 ->addIndexColumn()
                 ->editColumn('class', function ($row) {
@@ -49,12 +52,13 @@ class SectionController extends Controller
      */
     public function store(Request $request)
     {
+        $academicYearId = AcademicYear::activeId();
         $request->validate([
             'class_id' => 'required|exists:classes,id',
             'name' => 'required|string|max:255',
             'teacher_id' => 'nullable|exists:teachers,id',
         ]);
-
+        $request->merge(['academic_year_id' => $academicYearId]);
         Section::create($request->all());
 
         return redirect()->route('admin.sections.index')->with('success', 'Section created successfully.');
@@ -65,7 +69,8 @@ class SectionController extends Controller
      */
     public function show(string $id)
     {
-        $section = Section::with('class', 'teacher')->findOrFail($id);
+        $academicYearId = AcademicYear::activeId();
+        $section = Section::where('academic_year_id', $academicYearId)->with('class', 'teacher')->findOrFail($id);
         return view('sections.show', compact('section'));
     }
 

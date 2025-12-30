@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Section extends Model
 {
-    protected $fillable = ['class_id', 'name', 'teacher_id'];
+    protected $fillable = ['class_id', 'academic_year_id', 'name', 'teacher_id'];
 
     public function class()
     {
@@ -16,5 +16,9 @@ class Section extends Model
     public function teacher()
     {
         return $this->belongsTo(Teacher::class, 'teacher_id');
+    }
+    public function academicYear()
+    {
+        return $this->belongsTo(AcademicYear::class, 'academic_year_id');
     }
 }
