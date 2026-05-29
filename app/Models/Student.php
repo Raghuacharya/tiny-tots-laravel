@@ -23,8 +23,6 @@ class Student extends Model
         'nationality',
         'mother_tongue',
         'blood_group',
-        'class_id',
-        'section_id',
         'allergies',
         'surgeries',
         'chronic_illness',
@@ -150,19 +148,19 @@ class Student extends Model
 
     public function scopeWithMedicalConditions($query)
     {
-        return $query->where(function($q) {
+        return $query->where(function ($q) {
             $q->whereNotNull('allergies')
-              ->orWhereNotNull('surgeries')
-              ->orWhereNotNull('chronic_illness');
+                ->orWhereNotNull('surgeries')
+                ->orWhereNotNull('chronic_illness');
         });
     }
 
     public function scopeIncompleteDocuments($query)
     {
-        return $query->where(function($q) {
+        return $query->where(function ($q) {
             $q->where('birth_certificate_submitted', false)
-              ->orWhere('immunization_record_submitted', false)
-              ->orWhere('photos_submitted', false);
+                ->orWhere('immunization_record_submitted', false)
+                ->orWhere('photos_submitted', false);
         });
     }
 
@@ -206,5 +204,16 @@ class Student extends Model
         $lastStudent = self::orderBy('id', 'desc')->first();
         $nextNumber = $lastStudent ? (int) substr($lastStudent->student_id, 3) + 1 : 1;
         return 'LHB' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT); // LHB001, LHB002, etc.
+    }
+
+    public function enrolments()
+    {
+        return $this->hasMany(StudentEnrolment::class);
+    }
+
+    public function currentEnrolment()
+    {
+        return $this->hasOne(StudentEnrolment::class)
+            ->whereHas('academicYear', fn($q) => $q->where('is_active', true));
     }
 }

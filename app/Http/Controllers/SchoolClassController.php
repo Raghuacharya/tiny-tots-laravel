@@ -16,9 +16,7 @@ class SchoolClassController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $activeYearId = AcademicYear::activeId();
-
-            $classes = SchoolClass::where('academic_year_id', $activeYearId)->latest()->get();
+            $classes = SchoolClass::latest()->get();
             return DataTables::of($classes)
                 ->addIndexColumn()
                 ->addColumn('actions', function ($class) {
@@ -115,7 +113,8 @@ class SchoolClassController extends Controller
 
     public function getSections(string $id)
     {
-        $sections = Section::where('class_id', $id)->get(['id', 'name']);
+        $academicYearId = AcademicYear::activeId();
+        $sections = Section::where('class_id', $id)->where('academic_year_id', $academicYearId)->get(['id', 'name']);
         return response()->json($sections);
     }
 }

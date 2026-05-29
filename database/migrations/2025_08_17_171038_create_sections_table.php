@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('name'); // e.g., A, B, C
             $table->foreignId('teacher_id')->constrained('teachers')->onDelete('cascade');
             $table->timestamps();
+
+            $table->unique(['academic_year_id', 'class_id', 'name']);
         });
     }
 

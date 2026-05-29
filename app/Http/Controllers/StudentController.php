@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AcademicYear;
 use App\Models\Student;
 use App\Models\ParentModel;
 use App\Models\School;
 use App\Models\SchoolClass;
+use App\Models\Section;
 use App\Models\Sibling;
+use App\Models\StudentEnrolment;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -15,23 +18,42 @@ class StudentController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $students = Student::with('parent')->latest()->get();
+            $students = Student::with([
+                'parent',
+                'currentEnrolment.section.class',
+            ])
+                ->latest()
+                ->get();
+
             return DataTables::of($students)
                 ->addIndexColumn()
                 ->editColumn('parent', function ($student) {
                     return $student->parent ? $student->parent->display_name : 'N/A';
                 })
+                ->addColumn('class_section', function ($student) {
+                    $enrolment = $student->currentEnrolment;
+                    if (! $enrolment || ! $enrolment->section) {
+                        return 'N/A';
+                    }
+
+                    $class = $enrolment->section->class->name ?? '';
+                    $section = $enrolment->section->name ?? '';
+                    return trim($class . ' - ' . $section) ?: 'N/A';
+                })
                 ->editColumn('date_of_birth', function ($student) {
-                    return $student->date_of_birth ? $student->date_of_birth->format('d M Y') : 'N/A';
+                    return $student->date_of_birth
+                        ? $student->date_of_birth->format('d M Y')
+                        : 'N/A';
                 })
                 ->editColumn('status', function ($student) {
                     $statusColors = [
-                        'active' => 'success',
-                        'inactive' => 'secondary',
-                        'graduated' => 'primary',
-                        'withdrawn' => 'danger',
+                        'active'     => 'success',
+                        'inactive'   => 'secondary',
+                        'graduated'  => 'primary',
+                        'withdrawn'  => 'danger',
                     ];
                     $color = $statusColors[$student->status] ?? 'secondary';
+
                     return '<span class="badge badge-' . $color . '">' . ucfirst($student->status) . '</span>';
                 })
                 ->addColumn('actions', function ($student) {
@@ -40,8 +62,10 @@ class StudentController extends Controller
                 ->rawColumns(['status', 'actions'])
                 ->make(true);
         }
+
         return view('students.index');
     }
+
 
     public function create()
     {
@@ -128,6 +152,7 @@ class StudentController extends Controller
 
     public function store(Request $request)
     {
+        $academicYearId = AcademicYear::activeId();
         $validated = $request->validate([
             'full_name' => 'required|string|max:255',
             'date_of_birth' => 'required|date',
@@ -201,8 +226,6 @@ class StudentController extends Controller
             'medical_notes' => $validated['medical_notes'] ?? null,
 
             'parent_id' => $validated['parent_id'],
-            'class_id' => $validated['class_id'],
-            'section_id' => $validated['section_id'],
 
             'attended_school_previously' => $validated['attended_school_previously'] ?? false,
             'previous_school_name' => $validated['previous_school_name'] ?? null,
@@ -221,9 +244,27 @@ class StudentController extends Controller
             'medical_report' => $uploadFile('medical_report'),
         ]);
 
+        // Create Student Enrolment for this academic year + class/section
+        $section = Section::find($validated['section_id']);
+
+        // Auto-generate next roll number for this section
+        $nextRollNo = StudentEnrolment::where('section_id', $section->id)
+            ->max('roll_no') ?
+            (int) StudentEnrolment::where('section_id', $section->id)->max('roll_no') + 1 :
+            1;
+
+        StudentEnrolment::create([
+            'student_id' => $student->id,
+            'academic_year_id' => $academicYearId,
+            'section_id' => $section->id,
+            'enrolment_date' => $validated['admission_date'],
+            'status' => 'active',
+            'roll_no' => $nextRollNo,
+        ]);
+
         foreach ($request->sibling_student_id as $key => $ss_id) {
-            if($ss_id == null || $ss_id == '') {
-                if($request->sibling_name[$key] && $request->sibling_gender[$key] && $request->sibling_age[$key] && $request->sibling_class[$key] && $request->sibling_school[$key]) {
+            if ($ss_id == null || $ss_id == '') {
+                if ($request->sibling_name[$key] && $request->sibling_gender[$key] && $request->sibling_age[$key] && $request->sibling_class[$key] && $request->sibling_school[$key]) {
                     Sibling::create([
                         'parent_id' => $validated['parent_id'],
                         'name' => $request->sibling_name[$key],
@@ -244,4 +285,25 @@ class StudentController extends Controller
         $student = Student::with('parent', 'class', 'section')->findOrFail($id);
         return view('students.show', compact('student'));
     }
+
+    public function edit(Student $student)
+    {
+        // Get current enrolment for display (most recent active, or first enrolment)
+        $currentEnrolment = $student->enrolments()
+            ->with(['academicYear', 'section.class', 'section'])
+            ->where('status', 'active')
+            ->orWhereNull('status')  // Legacy enrolments
+            ->first();
+
+        $classes = SchoolClass::all();
+        $sections = [];
+
+        return view('students.edit', compact(
+            'student',
+            'currentEnrolment',
+            'classes',
+            'sections'
+        ));
+    }
+
 }

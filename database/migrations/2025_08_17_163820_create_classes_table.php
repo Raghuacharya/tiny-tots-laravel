@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('classes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('academic_year_id')->constrained()->onDelete('cascade');
             $table->string('name'); // e.g., Nursery, LKG, UKG
             $table->string('code')->nullable(); // optional short code
             $table->timestamps();
