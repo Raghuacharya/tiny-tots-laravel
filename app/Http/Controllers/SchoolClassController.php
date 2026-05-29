@@ -113,7 +113,8 @@ class SchoolClassController extends Controller
 
     public function getSections(string $id)
     {
-        $sections = Section::where('class_id', $id)->get(['id', 'name']);
+        $academicYearId = AcademicYear::activeId();
+        $sections = Section::where('class_id', $id)->where('academic_year_id', $academicYearId)->get(['id', 'name']);
         return response()->json($sections);
     }
 }

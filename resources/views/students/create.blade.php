@@ -27,14 +27,9 @@
                 <x-alert />
                 <div class="row">
                     <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Enter student details</h3>
-                            </div>
-                            <form action="{{ route('admin.students.store') }}" method="POST" enctype="multipart/form-data">
-                                @include('students._form', ['row' => null])
-                            </form>
-                        </div>
+                        <form action="{{ route('admin.students.store') }}" method="POST" enctype="multipart/form-data">
+                            @include('students._form', ['row' => null])
+                        </form>
                     </div>
                 </div>
             </div>
@@ -45,21 +40,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function() {
-            function calculateAge(dob) {
-                if (!dob) return '';
 
-                let birthDate = new Date(dob);
-                let today = new Date();
-
-                let age = today.getFullYear() - birthDate.getFullYear();
-                let monthDiff = today.getMonth() - birthDate.getMonth();
-
-                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-                    age--;
-                }
-
-                return age;
-            }
 
             function toggleImmunizationUpload() {
                 if ($('#immunization_complete').is(':checked')) {
@@ -171,48 +152,146 @@
                 $('#siblings-table-body').append(getSiblingRow());
             });
 
-            // On DOB change
-            $('#date_of_birth').on('change', function() {
-                let dob = $(this).val();
-                let age = calculateAge(dob);
-                $('#age').val(age ? age + ' years' : '');
-            });
 
-            // On page load (handles old values)
-            let dob = $('#date_of_birth').val();
-            if (dob) {
-                $('#age').val(calculateAge(dob) + ' years');
-            }
 
-            $('#class_id').on('change', function() {
-                var classId = $(this).val();
-                let url = "{{ route('admin.classes.getSections', ['id' => ':id']) }}";
-                url = url.replace(':id', classId);
-                $.ajax({
-                    type: "get",
-                    url: url,
-                    dataType: "json",
-                    success: function(response) {
-                        let sectionSelect = $('#section_id');
-                        sectionSelect.empty(); // clear old options
-                        sectionSelect.append(
-                            '<option value="" disabled selected>Select section</option>');
 
-                        if (response.length > 0) {
-                            $.each(response, function(index, section) {
-                                sectionSelect.append('<option value="' + section.id +
-                                    '">' + section.name + '</option>');
-                            });
-                        } else {
-                            sectionSelect.append(
-                                '<option value="">No sections available</option>');
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            const tabs = {
+                'custom-tabs-four-general': '#custom-tabs-four-general-tab',
+                'custom-tabs-four-academic': '#custom-tabs-four-academic-tab',
+                'custom-tabs-four-medical': '#custom-tabs-four-medical-tab',
+                'custom-tabs-four-history-documents': '#custom-tabs-four-history-documents-tab',
+                'custom-tabs-four-parents': '#custom-tabs-four-parents-tab'
+            };
+
+            // 1. Enhanced validation with forced error display
+            function validateTab(tabId) {
+                const tabPane = $(`#${tabId}`);
+                const requiredInputs = tabPane.find(':input[required]');
+
+                let isValid = true;
+
+                requiredInputs.each(function() {
+                    const input = $(this)[0];
+                    input.reportValidity(); // Trigger HTML5 validation
+
+                    // Force show error styling
+                    if (!input.validity.valid) {
+                        isValid = false;
+                        $(input).addClass('is-invalid');
+
+                        // Custom error message if HTML5 doesn't show it
+                        if (!input.validity.valid && input.validationMessage) {
+                            let errorDiv = $(input).siblings('.invalid-feedback');
+                            if (errorDiv.length === 0) {
+                                errorDiv = $('<div class="invalid-feedback d-block"></div>');
+                                $(input).after(errorDiv);
+                            }
+                            errorDiv.text(input.validationMessage || 'This field is required.');
                         }
-                    },
-                    error: function(xhr) {
-                        console.error(xhr.responseText);
+                    } else {
+                        $(input).removeClass('is-invalid');
+                        $(input).siblings('.invalid-feedback').remove();
                     }
                 });
+
+                return isValid;
+            }
+
+            // 2. Tab click handler (prevent invalid tab switch)
+            $('.nav-tabs a[data-toggle="pill"]').on('click', function(e) {
+                const targetTabId = $(this).attr('href').substring(1); // Remove #
+                const currentTabId = $('.tab-pane.show.active').attr('id');
+
+                if (!validateTab(currentTabId)) {
+                    e.preventDefault();
+                    scrollToFirstError(currentTabId);
+                    return false;
+                }
+            });
+
+            // 3. Next/Previous buttons
+            $('.btn-next').on('click', function() {
+                const currentTabId = $('.tab-pane.show.active').attr('id');
+                if (validateTab(currentTabId)) {
+                    const nextTabKey = getNextTabKey(currentTabId);
+                    if (nextTabKey) {
+                        $(tabs[nextTabKey]).tab('show');
+                    }
+                } else {
+                    scrollToFirstError(currentTabId);
+                }
+            });
+
+            $('.btn-prev').on('click', function() {
+                const currentTabId = $('.tab-pane.show.active').attr('id');
+                const prevTabKey = getPrevTabKey(currentTabId);
+                if (prevTabKey) {
+                    $(tabs[prevTabKey]).tab('show');
+                }
+            });
+
+            // 4. Form submit (validate ALL tabs)
+            $('form').on('submit', function(e) {
+                let allValid = true;
+                Object.keys(tabs).forEach(tabId => {
+                    if (!validateTab(tabId)) {
+                        allValid = false;
+                    }
+                });
+
+                if (!allValid) {
+                    e.preventDefault();
+                    const firstErrorTab = Object.keys(tabs).find(tabId => !validateTab(tabId));
+                    $(tabs[firstErrorTab]).tab('show');
+                    scrollToFirstError(firstErrorTab);
+                    return false;
+                }
+                return true;
+            });
+
+            // Helper functions
+            function scrollToFirstError(tabId) {
+                const firstError = $(`#${tabId}`).find('.is-invalid, :invalid')[0];
+                if (firstError) {
+                    firstError.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                    firstError.focus();
+                }
+            }
+
+            function getNextTabKey(currentTabId) {
+                const tabOrder = Object.keys(tabs);
+                const currentIndex = tabOrder.indexOf(currentTabId);
+                return tabOrder[currentIndex + 1] || null;
+            }
+
+            function getPrevTabKey(currentTabId) {
+                const tabOrder = Object.keys(tabs);
+                const currentIndex = tabOrder.indexOf(currentTabId);
+                return currentIndex > 0 ? tabOrder[currentIndex - 1] : null;
+            }
+
+            // Clear errors when user starts typing
+            $(document).on('input change', ':input[required]', function() {
+                $(this).removeClass('is-invalid');
+                $(this).siblings('.invalid-feedback').remove();
+            });
+
+            // Auto-focus first field on tab switch
+            $('.nav-tabs a[data-toggle="pill"]').on('shown.bs.tab', function(e) {
+                const targetTab = $(e.target.hash);
+                const firstInput = targetTab.find(':input:not([type=hidden]):eq(0)');
+                firstInput.focus();
             });
         });
     </script>
+
+
 @endsection

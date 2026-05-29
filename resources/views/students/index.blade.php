@@ -40,6 +40,7 @@
                                             <th>Student ID</th>
                                             <th>Full Name</th>
                                             <th>Parent</th>
+                                            <th>Class - Section</th>
                                             <th>Date of Birth</th>
                                             <th>Status</th>
                                             <th>Actions</th>
@@ -54,6 +55,7 @@
                                             <th>Student ID</th>
                                             <th>Full Name</th>
                                             <th>Parent</th>
+                                            <th>Class - Section</th>
                                             <th>Date of Birth</th>
                                             <th>Status</th>
                                             <th>Actions</th>
@@ -94,6 +96,10 @@
                     {
                         data: 'parent',
                         name: 'parent.name'
+                    },
+                    {
+                        data: 'class_section',
+                        name: 'class_section'
                     },
                     {
                         data: 'date_of_birth',

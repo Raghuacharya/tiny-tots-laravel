@@ -36,9 +36,6 @@ return new class extends Migration
             // Parent relationship (we'll link to parents table)
             $table->foreignId('parent_id')->constrained('parents')->onDelete('cascade');
 
-            $table->foreignId('class_id')->constrained('classes')->onDelete('cascade');
-            $table->foreignId('section_id')->constrained('sections')->onDelete('cascade');
-
             // Previous School Details
             $table->boolean('attended_school_previously')->default(false);
             $table->string('previous_school_name')->nullable();
