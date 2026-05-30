@@ -1,5 +1,10 @@
 ### Changelog
 
+#### [2.0.3] - 2026-05-30
+##### Added
+- Dashboard updated with total students, parents, classes, sections, fees, collected fees, recent students, recent payments, and upcoming birthdays
+- Student count per class with class name and academic year support
+
 #### [2.0.2] - 2025-12-30
 ##### Fixed
 - Academic year issue fixed w.r.to classes, sections

@@ -11,6 +11,7 @@ use App\Models\Payment;
 use App\Models\SchoolClass;
 use App\Models\Section;
 use App\Models\Student;
+use App\Models\StudentEnrolment;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -26,11 +27,23 @@ class DashboardController extends Controller
         $totalParents = ParentModel::count();
         $totalClasses = SchoolClass::count();
         $totalSections = Section::count();
+        $academicYear = AcademicYear::where('is_active', true)->first();
 
         // Get student count per class
-        $classStudentCounts = Student::select('class_id', DB::raw('COUNT(*) as student_count'))
-            ->groupBy('class_id')
-            ->pluck('student_count', 'class_id'); // key = class_id, value = student_count
+        $classStudentCounts = StudentEnrolment::join(
+            'sections',
+            'student_enrolments.section_id',
+            '=',
+            'sections.id'
+        )
+            ->where('student_enrolments.academic_year_id', $academicYear->id)
+            ->where('student_enrolments.status', 'active')
+            ->select(
+                'sections.class_id',
+                DB::raw('COUNT(*) as student_count')
+            )
+            ->groupBy('sections.class_id')
+            ->pluck('student_count', 'sections.class_id');
 
         // Get all fees grouped by class
         $feesByClass = Fee::select('class_id', DB::raw('SUM(amount) as total_fee'))
@@ -63,7 +76,7 @@ class DashboardController extends Controller
 
         $error = null;
         $type = null;
-        $academicYear = AcademicYear::where('is_active', true)->first();
+
         if (!$school || !$school->name || !$school->address || !$school->contact_email) {
             $error = 'Please set up your school profile first. <a href="' . route('admin.school.edit') . '">Click here to set up</a>';
             $type = 'error';
